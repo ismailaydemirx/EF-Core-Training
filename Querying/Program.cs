@@ -233,63 +233,63 @@ ETicaretContext context = new();
 #region CountAsync
 //Oluşturulan sorgunun execute edilmesi neticesinde kaç adet satırın elde edileceğini sayısal olarak(int) bizlere bildiren fonksiyondur.
 //var urunler = (await context.Urunler.ToListAsync()).Count();
-//var urunler = await context.Urunler.CountAsync();
+//var urunler = await context.Urunler.CountAsync(); // IQueryable olan bir sorgu üzerinden CountAsync fonksiyonunu kullanarak IQueryable olan sorguya direkt olarak Count fonksiyonunu dahil ediyoruz ve bu da performansı aşırı derecede etkiliyor. IEnumerable olsaydı verileri önce çekip belleğe alacaktık daha sonra sayısını sayacaktık ki bu çok daha fazla maliyetli bir işlem olacaktı yukarıdaki örnekteki gibi.
 #endregion
 
 #region LongCountAsync
 //Oluşturulan sorgunun execute edilmesi neticesinde kaç adet satırın elde edileceğini sayısal olarak(long) bizlere bildiren fonksiyondur.
-//var urunler = await context.Urunler.LongCountAsync(u => u.Fiyat > 5000);
+//var urunler = await context.Urunler.LongCountAsync(u => u.Fiyat > 5000); // burada count fonksiyonu içerisinde koşul belirtebileceğimizi gösterdik.
 #endregion
 
 #region AnyAsync
-//Sorgu neticesinde verinin gelip gelmediğini bool türünde dönen fonksiyondur. 
+//Sorgu neticesinde verinin gelip gelmediğini bool türünde dönen fonksiyondur. SQL kısmında Exist operatörünü çalıştırır, yani o veri var mı yok mu onu görebiliyoruz.
 //var urunler = await context.Urunler.Where(u => u.UrunAdi.Contains("1")).AnyAsync();
 //var urunler = await context.Urunler.AnyAsync(u => u.UrunAdi.Contains("1"));
 #endregion
 
 #region MaxAsync
-//Verilen kolondaki max değeri getirir.
+//Verilen kolonda bulunan max/en büyük değeri getirir. (Kolon türü ne ise geri dönüş değeri ona kolon ile aynı olacaktır, float ise float veya int ise int vs.)
 //var fiyat = await context.Urunler.MaxAsync(u => u.Fiyat);
 #endregion
 
 #region MinAsync
-//Verilen kolondaki min değeri getirir.
+//Verilen kolondaki min/en küçük değeri getirir.
 //var fiyat = await context.Urunler.MinAsync(u => u.Fiyat);
 #endregion
 
 #region Distinct
-//Sorguda mükerrer kayıtlar varsa bunları tekilleştiren bir işleve sahip fonksiyondur.
-//var urunler = await context.Urunler.Distinct().ToListAsync();
+//Sorguda mükerrer/tekrarlı kayıtlar varsa bunları tekilleştiren bir işleve sahip fonksiyondur. Yani aynı veriden 2 tane ve daha fazla varsa bunları tekilleştiriyoruz.
+//var urunler = await context.Urunler.Distinct().ToListAsync(); // Fonksiyonları kullanırken geri dönüş türlerine mutlaka bak, ezbere kod yazılmaz. Mesela kodu yazarken Distinct'in IQueryable döndüğünü fark edip bu kodu execute etmek için ToListAsync() fonksiyonunu çağırdık.
 #endregion
 
 #region AllAsync
 //Bir sorgu neticesinde gelen verilerin, verilen şarta uyup uymadığını kontrol etmektedir. Eğer ki tüm veriler şarta uyuyorsa true, uymuyorsa false döndürecektir.
-//var m = await context.Urunler.AllAsync(u => u.Fiyat < 15000);
+//var m = await context.Urunler.AllAsync(u => u.Fiyat < 150000);
 //var m = await context.Urunler.AllAsync(u => u.UrunAdi.Contains("a"));
 #endregion
 
 #region SumAsync
-//Vermiş olduğumuz sayısal proeprtynin toplamını alır.
+//Vermiş olduğumuz sayısal proeprty'nin toplamını alır.
 //var fiyatToplam = await context.Urunler.SumAsync(u => u.Fiyat);
 #endregion
 
 #region AverageAsync
-//Vermiş olduğumuz sayısal proeprtynin aritmatik ortalamasını alır.
-//var aritmatikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
+//Vermiş olduğumuz sayısal proeprtynin aritmetik ortalamasını alır. (Küsüratlı olabileceğinden dolayı Float türünde değer döndürür.)
+var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 #endregion
 
 #region Contains
-//Like '%...%' sorgusu oluşturmamızı sağlar.
+//Like '%...%' sorgusu oluşturmamızı sağlar. (içinde geçen şekilde like sorgusu oluşturmamız sağlar) Where şartı içerisinde kullanmamız gereken türden Contains fonksiyonudur.
 //var urunler = await context.Urunler.Where(u => u.UrunAdi.Contains("7")).ToListAsync();
 #endregion
 
 #region StartsWith
-//Like '...%' sorgusu oluşturmamızı sağlar.
+//Like '...%' sorgusu oluşturmamızı sağlar. Belirttiğimiz şart ile başlayan verileri getirir.
 //var urunler = await context.Urunler.Where(u => u.UrunAdi.StartsWith("7")).ToListAsync();
 #endregion
 
 #region EndsWith
-//Like '%...' sorgusu oluşturmamızı sağlar.
+//Like '%...' sorgusu oluşturmamızı sağlar. Belirttiğimiz şart ile biten verileri getirir.
 //var urunler = await context.Urunler.Where(u => u.UrunAdi.EndsWith("7")).ToListAsync();
 #endregion
 #endregion
