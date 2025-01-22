@@ -7,10 +7,11 @@ public class ETicaretContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ETicaretDB;User ID=SA;Password=1q2w3e4r+!");
+        optionsBuilder.UseSqlServer("Server=BAYDEMIRPC; Database=ETicaretDB;Trusted_Connection=True");
+
         //Provider
         //ConnectionString
-        //Lazy Loading 
+        //Lazy Loading
         //vb.
     }
 }

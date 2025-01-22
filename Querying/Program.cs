@@ -126,6 +126,7 @@ ETicaretContext context = new();
 //await urunler.ToListAsync();
 #endregion
 
+
 #region OrderByDescending
 //Descending olarak sıralama yapmamızı sağlayan bir fonksiyondur.
 
@@ -140,7 +141,7 @@ ETicaretContext context = new();
 #endregion
 
 #region ThenByDescending
-//OrderByDescending üzerinde yapılan sıralama işlemini farklı kolonlarada uygulamamızı sağlayan bir fonksiyondur. (Ascending)
+//OrderByDescending üzerinde yapılan sıralama işlemini farklı kolonlarada uygulamamızı sağlayan bir fonksiyondur. (Descending)
 //var urunler = await context.Urunler.OrderByDescending(u => u.Id).ThenByDescending(u => u.Fiyat).ThenBy(u => u.UrunAdi).ToListAsync();
 #endregion
 #endregion
@@ -163,32 +164,32 @@ ETicaretContext context = new();
 #region SingleOrDefaultAsync
 //Eğer ki, sorgu neticesinde birden fazla veri geliyorsa exception fırlatır, hiç veri gelmiyorsa null döner.
 #region Tek Kayıt Geldiğinde
-//var urun = await context.Urunler.SingleOrDefaultAsync(u => u.Id == 55);
+//var urun = await context.Urunler.SingleOrDefaultAsync(u => u.Id == 2212);
 #endregion
 #region Hiç Kayıt Gelmediğinde
 //var urun = await context.Urunler.SingleOrDefaultAsync(u => u.Id == 5555);
 #endregion
 #region Çok Kayıt Geldiğinde
-//var urun = await context.Urunler.SingleOrDefaultAsync(u => u.Id > 55);
+//var urun = await context.Urunler.SingleOrDefaultAsync(u => u.Id > 12);
 #endregion
 #endregion
 
 //Yapılan sorguda tek bir verinin gelmesi amaçlanıyorsa First ya da FirstOrDefault fonksiyonları kullanılabilir.
 #region FirstAsync
-//Sorgu neticesinde elde edilen verilerden ilkini getirir. Eğer ki hiç veri gelmiyorsa hata fırlatır.
+//Sorgu neticesinde elde edilen verilerden ilkini getirir. Eğer ki hiç veri gelmiyorsa HATA fırlatır.
 #region Tek Kayıt Geldiğinde
-//var urun = await context.Urunler.FirstAsync(u => u.Id == 55);
+//var urun = await context.Urunler.FirstAsync(u => u.Id == 1);
 #endregion
 #region Hiç Kayıt Gelmediğinde
 //var urun = await context.Urunler.FirstAsync(u => u.Id == 5555);
 #endregion
 #region Çok Kayıt Geldiğinde
-//var urun = await context.Urunler.FirstAsync(u => u.Id > 55);
+//var urun = await context.Urunler.FirstAsync(u => u.Id > 1);
 #endregion
 #endregion
 
 #region FirstOrDefaultAsync
-//Sorgu neticesinde elde edilen verilerden ilkini getirir. Eğer ki hiç veri gelmiyorsa null değerini döndürür.
+//Sorgu neticesinde elde edilen verilerden ilkini getirir. Eğer ki hiç veri gelmiyorsa NULL değerini döndürür.
 #region Tek Kayıt Geldiğinde
 //var urun = await context.Urunler.FirstOrDefaultAsync(u => u.Id == 55);
 #endregion
@@ -200,31 +201,30 @@ ETicaretContext context = new();
 #endregion
 #endregion
 
-#region SingleAsync, SingleOrDefaultAsync, FirstAsync, FirstOrDefaultAsync Karşılaştırması
+#region SingleAsync, SingleOrDefaultAsync, FirstAsync, FirstOrDefaultAsync Tablo Halinde Karşılaştırması
 
 #endregion
 
 #region FindAsync
-//Find fonksiyonu, primary key kolonuna özel hızlı bir şekilde sorgulama yapmamızı sağlayan bir fonksiyondur.
+//Find fonksiyonu, primary key kolonuna özel HIZLI bir şekilde sorgulama yapmamızı sağlayan bir fonksiyondur.
 //Urun urun = await context.Urunler.FirstOrDefaultAsync(u => u.Id == 55);
-//Urun urun = await context.Urunler.FindAsync(55);
-
+//Urun urun = await context.Urunler.FindAsync(12); // direkt parametre olarak ID kolonuna karşılık gelen sütunda arama yapmamıza olanak sağlıyor ve HIZLI bir yöntem.
 #region Composite Primary key Durumu
-//UrunParca u = await context.UrunParca.FindAsync(2, 5);
+//UrunParca u = await context.UrunParca.FindAsync(10, 23);
 #endregion
 #endregion
 
-#region FindAsync İle SingleAsync, SingleOrDefaultAsync, FirstAsync, FirstOrDefaultAsync Fonksiyonlarının Karşılaştırması
+#region FindAsync İle SingleAsync, SingleOrDefaultAsync, FirstAsync, FirstOrDefaultAsync Fonksiyonlarının Tablo Halinde Karşılaştırması
 
 #endregion
 
 #region LastAsync
-//Sorgu neticesinde gelen verilerden en sonuncusunu getirir. Eğer ki hiç veri gelmiyorsa hata fırlatır. OrderBy kullanılması mecburidir.
-//var urun = await context.Urunler.OrderBy(u => u.Fiyat).LastAsync(u => u.Id > 55);
+//Sorgu neticesinde gelen verilerden en SONUNCUSUNU getirir. Eğer ki hiç veri gelmiyorsa HATA fırlatır. OrderBy kullanılması mecburidir.
+//var urun = await context.Urunler.OrderBy(u => u.UrunAdi).LastAsync(u => u.Id > 12);
 #endregion
 
 #region LastOrDefaultAsync
-//Sorgu neticesinde gelen verilerden en sonuncusunu getirir. Eğer ki hiç veri gelmiyorsa null döner. OrderBy kullanılması mecburidir.
+//Sorgu neticesinde gelen verilerden en sonuncusunu getirir. Eğer ki hiç veri gelmiyorsa NULL döner. OrderBy kullanılması mecburidir.
 //var urun = await context.Urunler.OrderBy(u => u.Fiyat).LastOrDefaultAsync(u => u.Id > 55);
 #endregion
 #endregion
@@ -361,14 +361,14 @@ ETicaretContext context = new();
 //}).ToListAsync();
 #endregion
 #region Query Syntax
-var datas = await (from urun in context.Urunler
-                   group urun by urun.Fiyat
-            into @group
-                   select new
-                   {
-                       Fiyat = @group.Key,
-                       Count = @group.Count()
-                   }).ToListAsync();
+//var datas = await (from urun in context.Urunler
+//                   group urun by urun.Fiyat
+//            into @group
+//                   select new
+//                   {
+//                       Fiyat = @group.Key,
+//                       Count = @group.Count()
+//                   }).ToListAsync();
 #endregion
 #endregion
 
@@ -376,16 +376,17 @@ var datas = await (from urun in context.Urunler
 //Bir sorgulama fonksiyonu felan değildir!
 //Sorgulama neticesinde elde edilen koleksiyonel veriler üzerinde iterasyonel olarak dönmemizi ve teker teker verileri elde edip işlemler yapabilmemizi sağlayan bir fonksiyondur. foreach döngüsünün metot halidir!
 
-foreach (var item in datas)
-{
+//foreach (var item in datas)
+//{
 
-}
-datas.ForEach(x =>
-{
-    
-});
+//}
+//datas.ForEach(x =>
+//{
+
+//});
 #endregion
 
+Console.WriteLine();
 
 public class ETicaretContext : DbContext
 {
@@ -395,7 +396,7 @@ public class ETicaretContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ETicaretDB;User ID=SA;Password=1q2w3e4r+!");
+        optionsBuilder.UseSqlServer("Server=BAYDEMIRPC; Database=ETicaretDB2;Trusted_Connection=True; Encrypt=False");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

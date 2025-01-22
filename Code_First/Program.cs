@@ -10,7 +10,7 @@ public class ECommerceDbContext : DbContext
     public DbSet<Customer> Customers { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ECommerceDb;User Id=sa;Password=1q2w3e4r+!");
+        optionsBuilder.UseSqlServer("Server=localhost; Database=ETicaretDB;Trusted_Connection=True; Encrypt=False");
     }
 }
 
