@@ -295,15 +295,16 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 #endregion
 
 #region Sorgu Sonucu Dönüşüm Fonksiyonları
-//Bu fonksiyonlar ile sorgu neticesinde elde edilen verileri isteğimiz doğrultuusnda farklı türlerde projecsiyon edebiliyoruz.
+//Bu fonksiyonlar ile sorgu neticesinde elde edilen verileri isteğimiz doğrultusunda farklı türlerde projecsiyon edebiliyoruz.
 
 #region ToDictionaryAsync
 //Sorgu neticesinde gelecek olan veriyi bir dictioanry olarak elde etmek/tutmak/karşılamak istiyorsak eğer kullanılır!
 //var urunler = await context.Urunler.ToDictionaryAsync(u => u.UrunAdi, u => u.Fiyat);
 
-//ToList ile aynı amaca hizmet etmektedir. Yani, oluşturulan sorguyu execute edip neticesini alırlar.
-//ToList : Gelen sorgu neticesini entity türünde bir koleksiyona(List<TEntity>) dönüştürmekteyken,
-//ToDictionary ise : Gelen sorgu neticesini Dictionary türünden bir koleksiyona dönüştürecektir.
+//ToList ile AYNI amaca hizmet etmektedir. Yani, oluşturulan sorguyu execute edip neticesini alırlar.
+//ToList : Gelen sorgu neticesini ENTITY türünde bir koleksiyona(List<TEntity>) dönüştürmekteyken,
+//ToDictionary ise : Gelen sorgu neticesini DICTIONARY türünden bir koleksiyona dönüştürecektir.
+//Dictionary sayesinde verileri KeyValue kullanarak tutabiliriz.
 #endregion
 
 #region ToArrayAsync
@@ -313,8 +314,9 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 #endregion
 
 #region Select
-//Select fonksiyonunun işlevsel olarak birden fazla davranışı söz konusudur,
+//Select fonksiyonunun işlevsel olarak birden fazla davranışı söz konusudur:
 //1. Select fonksiyonu, generate edilecek sorgunun çekilecek kolonlarını ayarlamamızı sağlamaktadır. 
+
 
 //var urunler = await context.Urunler.Select(u => new Urun
 //{
@@ -322,7 +324,7 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 //    Fiyat = u.Fiyat
 //}).ToListAsync();
 
-//2. Select fonksiyonu, gelen verileri farklı türlerde karşılamamızı sağlar. T, anonim
+//2. Select fonksiyonu, gelen verileri farklı türlerde karşılamamızı sağlar. T (herhangi bir tür), anonim
 
 //var urunler = await context.Urunler.Select(u => new 
 //{
@@ -330,7 +332,7 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 //    Fiyat = u.Fiyat
 //}).ToListAsync();
 
-
+// İlla ki bir anonim tip kullanmaya gerek yok istersek CQRS pattern'i de hatırlayarak burada sadece sorgumuza uygun bir class oluşturup onu kullanabiliriz. UrunDetay diye bir class oluşturup onu kullandık.
 //var urunler = await context.Urunler.Select(u => new UrunDetay
 //{
 //    Id = u.Id,
@@ -340,7 +342,14 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 #endregion
 
 #region SelectMany
-//Select ile aynı amaca hizmet eder. Lakin, ilişkisel tablolar neticesinde gelen koleksiyonel verileri de tekilleştirip projeksiyon etmemizi sağlar.
+//Select ile aynı amaca hizmet eder. Lakin, ilişkisel tablolar neticesinde gelen koleksiyonel (ICollection) verileri de tekilleştirip projeksiyon etmemizi sağlar.
+//Burada ICollection olan yapımızı SelectMany kısmından önce Include fonksiyonu ile içeri ekledik, daha sonra SelectMany'nin 7 Override olan (koleksiyon, (ana_sinif, koleksiyon_sinif) => new TIP {} ) kullanarak ürün ve parçaları birbirine bağladık ve ardından listeledik. Bu işlem sırasında INNER JOIN yapılır.
+var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.Parcalar, (u, p) => new
+{
+    u.Id,
+    u.Fiyat,
+    p.ParcaAdi
+}).ToListAsync();
 
 //var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.Parcalar, (u, p) => new
 //{
