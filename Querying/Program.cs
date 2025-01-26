@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 
 ETicaretContext context = new();
@@ -344,12 +345,6 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 #region SelectMany
 //Select ile aynı amaca hizmet eder. Lakin, ilişkisel tablolar neticesinde gelen koleksiyonel (ICollection) verileri de tekilleştirip projeksiyon etmemizi sağlar.
 //Burada ICollection olan yapımızı SelectMany kısmından önce Include fonksiyonu ile içeri ekledik, daha sonra SelectMany'nin 7 Override olan (koleksiyon, (ana_sinif, koleksiyon_sinif) => new TIP {} ) kullanarak ürün ve parçaları birbirine bağladık ve ardından listeledik. Bu işlem sırasında INNER JOIN yapılır.
-var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.Parcalar, (u, p) => new
-{
-    u.Id,
-    u.Fiyat,
-    p.ParcaAdi
-}).ToListAsync();
 
 //var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.Parcalar, (u, p) => new
 //{
@@ -366,18 +361,20 @@ var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.P
 //var datas = await context.Urunler.GroupBy(u => u.Fiyat).Select(group => new
 //{
 //    Count = group.Count(),
-//    Fiyat = group.Key
-//}).ToListAsync();
+//    Fiyat = group.Key // GroupBy içerisinde KEY fonksiyonu gruplama işlemini yaptığımız kolonun değerini elde edebiliyoruz.
+//}).OrderByDescending(u=> u.Count).ToListAsync(); // GroupBy kısmına kadar iş bitiyor daha sonraki anonim tür kullanarak projekte etme işlemimizi select ile yapıyoruz.
 #endregion
 #region Query Syntax
+
 //var datas = await (from urun in context.Urunler
-//                   group urun by urun.Fiyat
-//            into @group
+//                   group urun by urun.Fiyat // gruplamak istediğimiz şey "urun", urun içerisinde "Fiyat" kolonunu gruplayacağız.
+//            into gruplandirilmisVeri // burada yaptığımız gruplandırmaya bir isim veriyoruz. "gruplandirilmisVeri" ismini verdik.
 //                   select new
 //                   {
-//                       Fiyat = @group.Key,
-//                       Count = @group.Count()
+//                       Fiyat = gruplandirilmisVeri.Key,
+//                       Count = gruplandirilmisVeri.Count()
 //                   }).ToListAsync();
+
 #endregion
 #endregion
 
@@ -391,7 +388,7 @@ var urunler = await context.Urunler.Include(u => u.Parcalar).SelectMany(u => u.P
 //}
 //datas.ForEach(x =>
 //{
-
+    // x iterasyonu ile içeri girdik istediğimiz veriye x. diyip ulaşabiliriz.
 //});
 #endregion
 
