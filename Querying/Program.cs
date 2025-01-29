@@ -388,7 +388,7 @@ var aritmetikOrtalama = await context.Urunler.AverageAsync(u => u.Fiyat);
 //}
 //datas.ForEach(x =>
 //{
-    // x iterasyonu ile içeri girdik istediğimiz veriye x. diyip ulaşabiliriz.
+    // x iterasyonu ile içeri girdik istediğimiz parametreye x. diyip ulaşabiliriz.
 //});
 #endregion
 
