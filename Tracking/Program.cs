@@ -13,6 +13,7 @@ ETicaretContext context = new();
 
 //AsNoTracking fonksiyonu ile yapılan sorgulamalarda, verileri elde edebilir, bu verileri istenilen noktalarda kullanabilir lakin veriler üzerinde herhangi bir değişiklik/update işlemi yapamayız.
 
+
 //var kullanicilar = await context.Kullanicilar.AsNoTracking().ToListAsync();
 //foreach (var kullanici in kullanicilar)
 //{
@@ -30,6 +31,8 @@ ETicaretContext context = new();
 //AsNoTracking ile elde edilen veriler takip edilmeyeceğinden dolayı yinelenen verilerin ayrı instancelarda olmasına sebebiyet veriyoruz. Çünkü CT mekanizması takip ettiği nesneden bellekte varsa eğer aynı nesneden birdaha oluşturma gereği duymaksızın o nesneye ayrı noktalardaki ihtiyacı aynı instance üzerinden gidermektedir.
 
 //Böyle bir durumda hem takip mekanizmasının maliyeitni ortadan kaldırmak hemide yinelenen dataları tek bir instance üzerinde karşılamak için AsNoTrackingWithIdentityResolution fonksiyonunu kullanabiliriz.
+
+//var kullanicilar = await context.Kullanicilar.Include(k=>k.Roller).AsNoTrackingWithIdentityResolution().ToListAsync();
 
 //var kitaplar = await context.Kitaplar.Include(k => k.Yazarlar).AsNoTrackingWithIdentityResolution().ToListAsync();
 
@@ -58,7 +61,7 @@ public class ETicaretContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ETicaretDB;User ID=SA;Password=1q2w3e4r+!");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=ETicaretDB2; Trusted_Connection=True; Encrypt=False");
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 }
