@@ -69,11 +69,12 @@ class ESirketDbContext : DbContext
     public DbSet<CalisanAdresi> CalisanAdresleri { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ESirketDB;User ID=SA;Password=1q2w3e4r+!");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=ESirketDB; Trusted_Connection=True; Encrypt=False");
     }
     //Model'ların(entity) veritabanında generate edilecek yapıları bu fonksiyonda içerisinde konfigüre edilir
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //Fluent API ile tanımlayacağımız tablodaki ID kolonunu belirledik. Aşağıda da yine aynı kolonu (Id) ForeignKey olarak belirleyerek 1 kolonu hem PK hem de FK olarak belirliyoruz.
         modelBuilder.Entity<CalisanAdresi>()
             .HasKey(c => c.Id);
 
