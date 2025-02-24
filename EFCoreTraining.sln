@@ -111,6 +111,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EF_Core_7_Entity_Splitting"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database_First", "Database_First\Database_First.csproj", "{4CDA67BB-41F2-4F4A-8A2A-515E9EA4A0B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backing_Fields", "Backing_Fields\Backing_Fields.csproj", "{841A1A49-9441-4C23-B4F2-1155E39B59F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -333,6 +335,10 @@ Global
 		{4CDA67BB-41F2-4F4A-8A2A-515E9EA4A0B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CDA67BB-41F2-4F4A-8A2A-515E9EA4A0B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CDA67BB-41F2-4F4A-8A2A-515E9EA4A0B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{841A1A49-9441-4C23-B4F2-1155E39B59F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{841A1A49-9441-4C23-B4F2-1155E39B59F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{841A1A49-9441-4C23-B4F2-1155E39B59F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{841A1A49-9441-4C23-B4F2-1155E39B59F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
