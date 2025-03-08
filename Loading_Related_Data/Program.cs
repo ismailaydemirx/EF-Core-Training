@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 ApplicationDbContext context = new();
+
 #region Loading Related Data
 
 #region Eager Loading
@@ -18,6 +19,8 @@ ApplicationDbContext context = new();
 //    .Where(e => e.Orders.Count > 2)
 //    .Include(e => e.Orders)
 //    .ToListAsync();
+
+
 
 #endregion
 #region ThenInclude
@@ -68,13 +71,13 @@ ApplicationDbContext context = new();
 #region Birbirlerinden Türetilmiş Entity'ler Arasında Include
 
 #region Cast Operatörü İle Include
-var persons1 = await context.Persons.Include(p => ((Employee)p).Orders).ToListAsync();
+//var persons1 = await context.Persons.Include(p => ((Employee)p).Orders).ToListAsync();
 #endregion
 #region as Operatörü İle Include
-var persons2 = await context.Persons.Include(p => (p as Employee).Orders).ToListAsync();
+//var persons2 = await context.Persons.Include(p => (p as Employee).Orders).ToListAsync();
 #endregion
 #region 2. Overload İle Include
-var persons3 = await context.Persons.Include("Orders").ToListAsync();
+//var persons3 = await context.Persons.Include("Orders").ToListAsync();
 #endregion
 #endregion
 
@@ -150,6 +153,6 @@ class ApplicationDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ApplicationDB;User ID=SA;Password=1q2w3e4r+!;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=localhost;Database=ApplicationDB; Trusted_Connection=True");
     }
 }
