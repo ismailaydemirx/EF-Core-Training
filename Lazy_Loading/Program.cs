@@ -10,6 +10,8 @@ ApplicationDbContext context = new();
 //Navigation property'ler üzerinde bir işlem yapılmaya çalışıldığı taktirde ilgili propertynin/ye temsil ettiği/karşılık gelen tabloya özel bir sorgu oluşturulup execute edilmesini ve verilerin yüklenmesini sağlayan bir yaklaşımdır.
 #endregion
 
+//Örneğin bir Employee tablomuz var ve bu tablo bir Region tablosuna bağlı. context.Employees.FindAsync(2) yaptığımız kısımda sadece Employee tablosundan verileri getirir. Bu durumda getirilen 2 id’li employee’nin Region bilgileri null’dur. Biz Lazy Loading kullanarak Region bilgisinin kullanmaya başladığımız anda bu Lazy loading devreye girecek ve o anda gidip SQL sorgusunu oluşturup bizlere uygun veriyi dönderecek. Bu sayede verileriilk başta değil gerek duyulduğu anda çağırmış oluyoruz. Bu yaklaşımı uygulayabilmek için genellikle Proxy Yapılanması uygulanmaktadır ki o da aşağıda mevcuttur.  
+
 //var employee = await context.Employees.FindAsync(2);
 //Console.WriteLine(employee.Region.Name);
 
@@ -36,15 +38,15 @@ ApplicationDbContext context = new();
 #endregion
 
 #region N+1 Problemi
-//var region = await context.Regions.FindAsync(1);
-//foreach (var employee in region.Employees)
-//{
-//    var orders = employee.Orders;
-//    foreach (var order in orders)
-//    {
-//        Console.WriteLine(order.OrderDate);
-//    }
-//}
+var region = await context.Regions.FindAsync(1);
+foreach (var employee in region.Employees)
+{
+    var orders = employee.Orders;
+    foreach (var order in orders)
+    {
+        Console.WriteLine(order.OrderDate);
+    }
+}
 #endregion
 
 //Lazy Loading, kullanım açısından oldukça maliyetli ve performans düşürücü bir etkiye sahip yöntemdir. O yüzden kullanırken mümkün mertebe dikkatli olmalı ve özellikle navigation propertylerin döngüsel tetiklenme durumlarında lazy loading'i tercih etmemeye odaklanmalıyız. Aksi taktirde her bir tetiklemeye karşılık aynı sorguları üretip execute edecektir. Bu durumu N+1 Problemi olarak nitelendirmekteyiz.
@@ -187,7 +189,7 @@ class ApplicationDbContext : DbContext
     {
         optionsBuilder
             .UseLazyLoadingProxies()
-            .UseSqlServer("Server=localhost, 1433;Database=ApplicationDB;User ID=SA;Password=1q2w3e4r+!;TrustServerCertificate=True");
+            .UseSqlServer("Server=BAYDEMIRPC\\SQLEXPRESS;Database=ApplicationDB;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
         //optionsBuilder.UseLazyLoadingProxies();
     }
