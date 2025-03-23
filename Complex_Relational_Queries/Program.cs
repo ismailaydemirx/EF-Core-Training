@@ -196,15 +196,15 @@ ApplicationDbContext context = new();
 #endregion
 
 #region Collection Selector'da Where Kullanma Durumu
-//var query = from order in context.Orders
-//            from person in context.Persons.Where(p => p.PersonId == order.PersonId)
-//            select new
-//            {
-//                order,
-//                person
-//            };
+var query = from order in context.Orders
+            from person in context.Persons.Where(p => p.PersonId == order.PersonId)
+            select new
+            {
+                order,
+                person
+            };
 
-//var datas = await query.ToListAsync();
+var datas = await query.ToListAsync();
 #endregion
 
 #region Cross Apply
@@ -285,6 +285,6 @@ class ApplicationDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ApplicationDB;User ID=SA;Password=1q2w3e4r+!;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=BAYDEMIRPC\\SQLEXPRESS;Database=ApplicationDB;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
     }
 }

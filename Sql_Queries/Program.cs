@@ -98,7 +98,7 @@ ApplicationDbContext context = new();
 //var persons = await context.Persons.FromSql($"SELECT Name, PersonId FROM Persons")
 //    .ToListAsync();
 
-//Sütun isimleri proıperty isimleriyle aynı olmalıdır.
+//Sütun isimleri property isimleriyle aynı olmalıdır.
 
 //SQL Sorgusu Join yapısı İÇEREMEZ!!! Haliyle bu tarz ihtiyaç noktalarında Include fonksiyonu KULLANILMALIDIR!
 //var persons = await context.Persons.FromSql($"SELECT * FROM Persons")
@@ -137,7 +137,7 @@ class ApplicationDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ApplicationDB;User ID=SA;Password=1q2w3e4r+!;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Server=BAYDEMIRPC\\SQLEXPRESS;Database=ApplicationDB;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
     }
 }
 

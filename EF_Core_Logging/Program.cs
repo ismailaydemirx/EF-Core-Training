@@ -73,7 +73,7 @@ class ApplicationDbContext : DbContext
     {
         optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=ApplicationDB;User ID=SA;Password=1q2w3e4r+!;TrustServerCertificate=True");
 
-        //optionsBuilder.LogTo(Console.WriteLine);
+        //optionsBuilder.LogTo(Console.WriteLine); // Log'un ne kullanılarak yapılacağını belirledik.
         //optionsBuilder.LogTo(message => Debug.WriteLine(message));
         optionsBuilder.LogTo(async message => await _log.WriteLineAsync(message),LogLevel.Information)
             .EnableSensitiveDataLogging()
